@@ -1,0 +1,102 @@
+1. les injections SQL : un code SQL injecté dans un formulaire permettant de contourner la sécurité. 
+
+Email input : nous allons inserer un code SQL qui permet de casser le controle des identifiants. 
+
+$requete ="select * from user where email='".$email."' and mdp ='".$mdp."' ;"; 
+
+Quel code SQL faut-il tapé pour avoir un résultat sans passer par email et mdp ? 
+
+$requete ="select * from user where email=' ' or 1=1 ; and mdp ='".$mdp."' ;"; 
+
+injection : ' or 1=1 ; 
+
+Pour se premunir de ces attaques par injection de code SQL, il faut passer par des requetes paramétrées : pas de variable PHP dans la requete. 
+
+La classe PDO dispose de paramètres (:nomParametre) pour parametrer les données dans la requete.
+
+La nouvelle requete :
+$requete ="select * from user where email = :email and mdp =:mdp ;"; 
+
+$donnees = array(":email"=>$email, ":mdp"=>$mdp ); 
+
+ou bien 
+
+$exec->bindValue (":email", $email, PDO::STRING_PARAM); 
+
+ou bien : 
+
+$requete ="select * from user where email = ? and mdp= ?;";
+$exec->bindValue (1, $email, PDO::STRING_PARAM); 
+$exec->bindValue (2, $mdp, PDO::STRING_PARAM); 
+
+2. Sécurité des mots de passe 
+2.1 Hashage des mots de passe
+	a. La fonction md5() 
+	Cote SQL : update user set mdp = md5(mdp); 
+
+	Cote PHP : $mdp = md5($mdp);
+
+	b. La fonction sha1()
+	Cote SQL : 
+		update user set mdp = "123" where iduser = 1; 
+		update user set mdp = "456" where iduser = 2; 
+		update user set mdp = sha1(mdp); 
+
+	Cote PHP : 
+		$mdp = sha1($mdp); 
+
+	c. Renforcement avec le grain sel 
+	Le grain sel est un très grand nombre qui s'ajoute au mdp auxquels est applique le sha1. 
+
+	Coté SQL : 
+		create table grainSel (
+		nb varchar(200) not null primary key
+		);
+		insert into grainSel values("1234567890"); 
+
+		update user set mdp = "123" where iduser = 1; 
+		update user set mdp = "456" where iduser = 2;
+
+		set @gsel = "";
+		select @gsel; 
+		select nb into @gsel from grainsel ;
+		update user set mdp = sha1(concat(mdp, @gsel ));
+
+	Cote PHP : 
+		methode dans le modele pour récupérer le grainSel 
+
+		on applique le sha1 à la concaténation 
+		$mdp = sha1($mdp.$gsel); 
+
+2.2 Changer le mot de passe à intervalles réguliers : 30 jours 
+	COTE SQL : 
+		Ajouter un champ (colonne) dateMdp de type dateMdp
+
+		alter table nomTable[add, drop, change, modify] champ type;
+
+		alter table user add dateMdp date; 
+
+		update user set dateMdp = "2026-10-01";
+	COTE PHP :
+		récupérer la date du mot de passe
+		récupérer la date du jour de connexion
+		on compare les dates et on calcule la différence de jours
+		Si diff > 30 jours
+			Alors on affiche le formulaire de modification du Mdp 
+				on applique le changement avec new mdp et Curdate()
+		Finsi		
+2.3 Historique des mots de passes 
+	on va stocker les mots de passes déjà utilisés et lors du changement, l'user ne doit pas prendre des mdp déjà utilisés.
+
+	COTE SQL : 
+		création d'une table ancienMDP qui stocke les mots de passes utilisés (idligne, email, mdp, dateMdp).
+
+	COTE PHP : 
+		méthode permettant de vérifier si un newMdp existe ou non
+		méthode qui ajoute un new Mdp accepte à la table des anciensMdp
+
+
+
+
+
+

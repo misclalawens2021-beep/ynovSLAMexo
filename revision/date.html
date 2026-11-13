@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DATE</title>
+</head>
+<body>
+    <script>
+        let d = parseInt(prompt("Donner un jour :"));
+        let m = parseInt(prompt("Donner un mois :"));
+        let y = parseInt(prompt("Donner une année :"));
+
+        let valid = true;
+        
+        if(m < 1 || m > 12) {
+            valid = false;
+        } else if(m == 2 && d > 29) {
+            valid = false;
+        } else if ((m == 4 || m == 6 || m == 9 || m == 11) && d > 30) {
+            valid = false;
+        } else if(d < 1 || d > 31) {
+            valid = false;
+        }
+
+        if (valid) {
+            alert("Date valide");
+        } else {
+            alert("Date invalide");
+        }
+    </script>
+</body>
+</html>

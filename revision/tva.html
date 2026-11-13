@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TVA</title>
+</head>
+<body>
+    <script>
+        let ht_uni = parseFloat(prompt("Donner le prix unitaire HT: "));
+        let q = parseInt(prompt("Donner la quantité :"));
+        let t_tva = parseFloat(prompt("Donner le taux TVA :"));
+        
+        let v_tva = ht_uni * (t_tva / 100);
+        let p_ttc = ht_uni + v_tva;
+        
+
+        alert("Le prix TTC est de : " + p_ttc + " le montant TVA est de : " + v_tva);
+    </script>
+</body>
+</html>

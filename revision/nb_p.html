@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Les nombres parfaits :</title>
+</head>
+<body>
+    <script>
+        let bMin = parseInt(prompt("Donne la borne minimal :"));
+        let bMax = parseInt(prompt("Donne la borne maximal :"));
+
+        alert("Nombres parfaits entre " + bMin + " et " + bMax);
+
+        for (let n = bMin; n < bMax; n++) {
+            let smDiv = 0;
+
+            for (let i = 1; i < n-1; i++) {
+                if (n % i == 0) {
+                    smDiv = smDiv + i;
+                }
+            }
+
+            if (smDiv == n && n > 0) {
+                console.log(n);
+            }
+
+            alert("Les nombres parfaits sont :" + n + ".");
+        }
+    </script>
+</body>
+</html>
