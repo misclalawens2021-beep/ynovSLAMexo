@@ -111,6 +111,8 @@ $exec->bindValue (2, $mdp, PDO::STRING_PARAM);
 		- changer la méthode verifConnexion
 		- créer une méthode setNbTentatives
 
+2.5 Propositions de mots de passe respectant les exigences de la CNIL générer 5 mots de passe aléatoirement avec 12 caractères. 
+(au moins uneMaj, uneMin, un chiffre et un caractère spécial)
 
 
 

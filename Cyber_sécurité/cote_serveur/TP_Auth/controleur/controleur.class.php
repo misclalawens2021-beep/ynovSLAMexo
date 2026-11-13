@@ -44,6 +44,40 @@
 		public function verifAnciens($email, $mdp){
 			return $this->unModele->verifAnciens($email, $mdp);
 		}
+		
+		public function genererMdp(){
+		/** Génere aléatoirement 5 mdp dans un TAB avec respect des exigences de la CNIL :
+		 * 		- au moins 12 caractères;
+		 * 		- au moins une MAJ
+		 * 		- au moins une min
+		 * 		- au moins un chiffre
+		 * 		- au moins un caractère spécial 
+		 */
+		$tabMdp = array();
+		$maj = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+		$min = "abcdefghijklmnopqrstuvwxyz";
+		$chi = "0123456789";
+		$spe = "@&$=+-!.";
+		$tout = $maj.$min.$chi.$spe;
+		for($i=1; $i<=5; $i++){
+			$mdp = "";
+			// construction aléatoire de mdp
+			$mdp .= $maj[random_int(0, strlen($maj)-1)];
+			$mdp .= $min[random_int(0, strlen($min)-1)];
+			$mdp .= $chi[random_int(0, strlen($chi)-1)];
+			$mdp .= $spe[random_int(0, strlen($spe)-1)];
+
+			for($j = 1; $j <= 8; $j++){
+				$mdp .= $tout[random_int(0, strlen($tout)-1)];
+			}
+			// ajout du mdp dans le tableau
+			$tabMdp[] = $mdp;
+		}
+		return $tabMdp;
+		
+		}
 	}
+
+	
 
 ?>

@@ -40,6 +40,8 @@
 			if ($nbjours >= 30){
 				// changement de MDP
 				require_once("vue/vue_change_mdp.php");
+				$tabMdp = $unControleur->genererMdp();
+				echo "<br> Proposition : " . implode(",", $tabMdp); 
 			}
 		}
 	}
