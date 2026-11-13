@@ -95,7 +95,21 @@ $exec->bindValue (2, $mdp, PDO::STRING_PARAM);
 		méthode permettant de vérifier si un newMdp existe ou non
 		méthode qui ajoute un new Mdp accepte à la table des anciensMdp
 
+2.4 Nombre de tentatives : le compte sera désactivé après un nombre de tentatives fixé à 5 : attaques par brute-force
 
+	- Côté SQL :
+		- ajouter un compteur de tentatives : nbTentatives 
+		- ajouter un attribut actif/nonactif : actif
+		alter table user add nbTentatives int default 0;
+		alter table user add actif boolean default true;
+
+	- Côté PHP : 
+		- changer la méthode de vérification de la connexion : 
+		vérifier email & actif. En cas d'une connexion infructueuse, on augmente le nombre de tentatives
+		Si le nombre de tentatives est >= 5, on désactive le compte.
+
+		- changer la méthode verifConnexion
+		- créer une méthode setNbTentatives
 
 
 

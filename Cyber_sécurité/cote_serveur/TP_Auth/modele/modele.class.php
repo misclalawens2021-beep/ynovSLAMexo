@@ -54,6 +54,41 @@
 			return $unUser;
 		}
 
+		public function selectWhereUser_3 ($email){
+			$requete ="select * from user where email=? and actif = 1;";
+			//preparation avant execution
+			$exec = $this->unPdo->prepare ($requete); 
+			//execution de la requete 
+			$exec->bindValue(1, $email,PDO::PARAM_STR); 
+			// $exec->bindValue(2, $mdp, PDO::PARAM_STR);
+			$exec->execute(); 
+			//extraction d'un enregistrement
+			$unUser = $exec->fetch(); 
+			return $unUser;
+		}
+
+		public function setNbTentatives($email, $nb){
+			/** $nb = 0 --> remise à 0 des tentatives
+			 * $nb = 1 --> incrementer nbTentatives de 1 */
+			if($nb == 0){
+				$requete = "update user set nbTentatives = 0 where email=?;";
+			} else {
+				$requete = "update user set nbTentatives = nbTentatives + 1 where email=?;";
+			}
+			$exec = $this->unPdo->prepare($requete);
+			$exec -> bindValue(1, $email, PDO::PARAM_STR);
+			$exec -> execute();
+
+		}
+		
+
+		public function desactiverCompte($email){
+			$requete = "update user set actif = 0 where email = ?;";
+			$exec = $this->unPdo->prepare($requete);
+			$exec -> bindValue(1, $email, PDO::PARAM_STR);
+			$exec -> execute();
+		}
+
 		public function getGrainSel (){
 			$requete = "select nb from grainSel;";
 			$exec = $this->unPdo->prepare ($requete); 
@@ -68,7 +103,7 @@
 		// }
 
 		public function change_mdp($email, $mdp1){
-			$requete = "update user set mdp = :mdp, dateMdp = curdate() email = :email;";
+			$requete = "update user set mdp = :mdp, dateMdp = curdate() where email = :email;";
 			$exec = $this->unPdo->prepare ($requete); 
 			$tab = array(":email" => $email, ":mdp" =>$mdp1);
 			$exec->execute($tab);
@@ -78,11 +113,11 @@
 			$exec->execute($tab);
 		}
 
-		public function verifAnciensMdp($email, $mdp){
+		public function verifAnciens($email, $mdp){
 			$requete = "select * from anciensMdp where email = :email and mdp = :mdp;";
-			$exec = $this->unPDO->prepare($requete);
+			$exec = $this->unPdo->prepare($requete);
 			$tab = array(":email"=>$email, ":mdp"=>$mdp);
-			$exec = execute($tab);
+			$exec -> execute($tab);
 			return $exec->fetch();
 		}
 	}	

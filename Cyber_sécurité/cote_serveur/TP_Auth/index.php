@@ -44,19 +44,20 @@
 		}
 	}
 
-	if (isset($_POST['modifier'])){
+	if (isset($_POST['Modifier'])){
 		$mdp1 = $_POST['mdp1'];
 		$mdp2 = $_POST['mdp2'];
 		$email = $_POST['email'];
 		if ($mdp1 == $mdp2){
-			if($unControleur->verifAnciens($email, $mdp) == null){
-				$controleur->change_mdp($email, $mdp1);
+			if($unControleur->verifAnciens($email, $mdp1) == null){
+				$unControleur->change_mdp($email, $mdp1);
 				echo "<br> Changement réussi du MDP";
 			} else {
 			echo "<br> Mot de passe déjà utilisé.";
-		} else {
-			echo "<br> Pas d'équivalence des deux mots de passes.";
-		}
+		} 
+		// else {
+		// 	echo "<br> Pas d'équivalence des deux mots de passes.";
+		// }
 	}
 	}
 	?>
