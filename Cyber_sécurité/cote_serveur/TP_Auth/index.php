@@ -20,7 +20,7 @@
 		$unUser =$unControleur->selectWhereUser($email, $mdp); 
 		if($unUser == null){
 			echo "<br> Veuillez vérifier vos identifiants."; 
-		}else {
+		} else {
 			echo "<br> Bienvenue ".$unUser['nom']." ".$unUser['prenom'];
 			// récupérer la date de changement MDP
 			$dtMdp = $unUser['dateMdp'];
