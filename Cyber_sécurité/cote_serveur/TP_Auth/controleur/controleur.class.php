@@ -78,7 +78,4 @@
 		
 		} // Fin de genererMdp
 	} // Fin de la classe Controleur
-
-	
-
 ?>
